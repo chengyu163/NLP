@@ -4,8 +4,6 @@ Created on 13/10/2020
 @author: yu
 '''
 import nltk
-import csv
-import pickle
 import sys
 from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.naive_bayes import MultinomialNB,BernoulliNB
@@ -23,7 +21,13 @@ train_sent=train_data.splitlines()                                            #s
 all_sentence=""
 coarse_fine_list=[]
 for line in train_sent:
-    coarse_fine_list.append(line.split(None, 1)[0])
+    if taxonomy=="-coarse":
+        coarse_fine_list.append(line.split(':')[0])
+    elif taxonomy=="-fine":
+        coarse_fine_list.append(line.split(None, 1)[0])
+    else:
+        print("wrong taxonomy")
+        exit
 for line in train_sent:
     all_sentence= all_sentence + line.split(None, 1)[1] + '\n'
 
@@ -36,7 +40,7 @@ for j in all_words:
         all_words1.append(j)
 e=0
 for i in train_sent:                    # Creates a list of list of lists with words of each question and the 
-    words=[]                            # corresponding label [0-6]
+    words=[]                            # corresponding label 
     set1=[]
     words=nltk.word_tokenize(i)
     set1.append(words[2:]) 
@@ -63,7 +67,7 @@ featuresets=[(find_features(rev),category) for (rev, category) in final_set]
 
 
 
-training_set=featuresets[:3200]
+training_set=featuresets[:2000]
 #testing_set=featuresets[3200:]
 #Split of 80:20 for training and testing set
 
@@ -94,15 +98,14 @@ answer=[]
 
 
 
-
-id1=301                                   #Predicting for all the testing data and writing it in a list
+                                   #Predicting for all the testing data and writing it in a list
 for r in final_test:
     prediction=LinearSVC_classifier.classify(find_features(r[0]))    
     answer.append(prediction)
 
 
 
-f = open("Prediction.txt", "w")
+f = open("predicted-labels.txt", "w")
 for line in answer:
     f.write(line+'\n')
 
