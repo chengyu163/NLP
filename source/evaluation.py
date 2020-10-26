@@ -1,5 +1,5 @@
 import sys
-from sklearn.metrics import fbeta_score, accuracy_score
+from sklearn.metrics import accuracy_score
 
 dev_labels=open(sys.argv[1],'r').read()   #Reads in the dev_labels file
 predicted_labels=open(sys.argv[2],'r').read() #Reads in the predicted labels file

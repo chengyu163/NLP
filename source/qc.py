@@ -3,23 +3,14 @@ import sys
 import pandas as pd
 import numpy as np
 import re, nltk
-from sner import Ner
 import spacy
-from sklearn.metrics import confusion_matrix, accuracy_score, average_precision_score
-from sklearn.model_selection import KFold, StratifiedKFold, cross_val_score, GridSearchCV
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from nltk.internals import find_jars_within_path
-from nltk.tag import StanfordPOSTagger
-from nltk.tag import StanfordNERTagger
-import spacy
+from sklearn.metrics import accuracy_score
 from sklearn import linear_model
 from sklearn import svm
-from sklearn.metrics import fbeta_score, accuracy_score
 from scipy.sparse import hstack
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer 
-from nltk.stem.snowball import SnowballStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.preprocessing import LabelEncoder
 
@@ -185,7 +176,7 @@ model = svm.LinearSVC()
 
 
 if taxonomy=='-fine':
-    f = open("develop68-coarse.txt", "w")
+    f = open("develop68-fine.txt", "w")
 
     
     model.fit(x_all_ft_train, train['QType'])
@@ -193,7 +184,7 @@ if taxonomy=='-fine':
     for line in prediction:
         f.write(line+'\n')
 elif taxonomy=='-coarse':
-    f = open("develop68-fine.txt", "w")
+    f = open("develop68-coarse.txt", "w")
 
     model.fit(x_all_ft_train, train['QType-Coarse'])
     prediction = model.predict(x_all_ft_test_question)
